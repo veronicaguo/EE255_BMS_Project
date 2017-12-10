@@ -17,4 +17,4 @@
 #define DMIN 0.4
 #endif
 
-float CC_Charge(float DUTY, float CURR);
+float CC_Charge(float curr);
