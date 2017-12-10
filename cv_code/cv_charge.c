@@ -4,7 +4,7 @@
 
 #include "cv_charge.h"
 
-float cv_charge(float duty, float vol_pack)
+float cv_charge(float vol_pack)
 {
 	error_cv = V_REF - vol_pack
 	integ = integ + error_cv * DT
@@ -16,6 +16,6 @@ float cv_charge(float duty, float vol_pack)
 	else if (duty_new <= DMIN){
 		duty_new = DMIN
 	}
-	
+
 	return duty_new
 }

@@ -17,4 +17,4 @@
 #ifndef DMIN
 #define DMIN 0.4
 
-float CC_Charge(float duty, float vol_pack);
+float CC_Charge(float vol_pack);
