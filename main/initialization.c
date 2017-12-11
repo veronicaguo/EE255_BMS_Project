@@ -52,7 +52,7 @@ uint8_t rx_cfg[TOTAL_IC][7];
 
 
 //! Initializes hardware and variables
-void setup(){
+void LTC_setup(){
 
 	Serial.begin(115200); //! baud rate
 	LTC6803_initialize(); //! initialize LTC6803 hardware
@@ -63,15 +63,32 @@ void setup(){
 
 
 //! main loop -> probably should move it to the outer main MAIN LOOP??
-void loop(){
+void LTC_initialize(){
 
-  if (Serial.available()) //! check for user input 
-  { 
-    uint32_t user_command;
-    user_command = read_int(); //! read the user command
-    Serial.println(user_command);
-    run_command(user_command);
-  }
+  // if (Serial.available()) //! check for user input 
+  // { 
+  //   uint32_t user_command;
+  //   user_command = read_int(); //! read the user command
+  //   Serial.println(user_command);
+  //   run_command(user_command);
+  // }
+
+  run_command(1);
+  run_command(2);
+}
+
+
+uint16_t LTC_cell_voltage_meas(){
+  run_command(3);
+  run_command(4);
+  return cell_voltage;
+}
+
+
+uint16_t LTC_temp_voltage_meas(){
+  run_command(5);
+  run_command(6);
+  return temp_voltage;
 }
 
 
@@ -79,9 +96,9 @@ void loop(){
 
 //! Prints the main menu
 void print_menu(){
-	Serial.println(F("Please enter LTC6803 Command"));
+	  Serial.println(F("Please enter LTC6803 Command"));
   	Serial.println(F("Write Configuration: 1"));
- 	Serial.println(F("Read Configuration: 2"));
+ 	  Serial.println(F("Read Configuration: 2"));
   	Serial.println(F("Start Cell Voltage Conversion: 3"));
   	Serial.println(F("Read Cell Voltages: 4"));
   	Serial.println(F("Start Temp Voltage Conversion: 5"));
@@ -320,3 +337,4 @@ void serial_print_hex(uint8_t data)
   else
     Serial.print((byte)data,HEX);
 }
+

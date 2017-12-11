@@ -1,4 +1,3 @@
-
 #ifndef V_REF
 #define V_REF 16.4
 
@@ -17,4 +16,4 @@
 #ifndef DMIN
 #define DMIN 0.4
 
-float CC_Charge(float vol_pack);
+float cv_charge(float vol_pack);

@@ -8,7 +8,7 @@ float duty_new;
 float cc_ch_error;
 float cc_ch_integ = 0.0;
 
-float CC_Charge(float curr)
+float cc_charge(float curr)
 {
 	cc_ch_error = IDES_CH - curr;
 	cc_ch_integ = cc_ch_integ + cc_ch_error * DT;
