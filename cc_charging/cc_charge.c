@@ -2,7 +2,7 @@
   EE255 BMS constant current charging.
 */
 
-#include "CC_Charge.h"
+#include "cc_charge.h"
 
 float duty_new;
 float cc_ch_error;
