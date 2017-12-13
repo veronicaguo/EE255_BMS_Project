@@ -7,6 +7,8 @@
 #include "LTC68031.h"
 #include <SPI.h>
 
+int baud = 9600;
+
 //! # of ICs in the daisy chain
 const uint8_t TOTAL_IC = 1; 
 
@@ -54,7 +56,7 @@ uint8_t rx_cfg[TOTAL_IC][7];
 //! Initializes hardware and variables
 void LTC_setup(){
 
-	Serial.begin(115200); //! baud rate
+	Serial.begin(baud); //! baud rate
 	LTC6803_initialize(); //! initialize LTC6803 hardware
 	init_cfg();	//!initializa 6803 configuration
 	print_menu();
