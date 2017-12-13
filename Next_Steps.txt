@@ -1,0 +1,19 @@
+*state machine needs to use pack limits, not cell limits
+*comment out CC and CV discharge until we have code for them?
+*115200 a good rate?
+*add a serial.print command to the full loop to get communication with the computer to get readings
+*construct output data into single vector during each time step
+*shouldn't there be 4 cell voltages and 2 cell temperatures in the output arrays???
+*edit python script to match the baud rate and incomming data array
+
+
+
+*need to solder thermistors
+*need to set up battery packs
+*find spec sheet for battery
+*"characterization"
+
+
+
+*Website status
+*Final presentation status
