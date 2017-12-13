@@ -13,7 +13,7 @@ int baud = 9600;
 const uint8_t TOTAL_IC = 1; 
 
 //! array to store cell voltages
-uint16_t cell_voltage[TOTAL_IC][4];
+uint16_t cell_voltage[1][4];
 /*!<
   The cell codes will be stored in the cell_codes[][12] array in the following format:
 
@@ -23,14 +23,14 @@ uint16_t cell_voltage[TOTAL_IC][4];
 ****/
 
 //! array to store temperature voltages
-uint16_t temp_voltage[TOTAL_IC][2];
+uint16_t temp_voltage[1][2];
 
 //! array to store current values
 
 
 
 
-uint8_t tx_cfg[TOTAL_IC][6];
+uint8_t tx_cfg[1][6];
 /*!<
   The tx_cfg[][6] stores the LTC6803 configuration data that is going to be written
   to the LTC6803 ICs on the daisy chain. The LTC6803 configuration data that will be
@@ -41,7 +41,7 @@ uint8_t tx_cfg[TOTAL_IC][6];
  |IC1 CFGR0     |IC1 CFGR1     |IC1 CFGR2     |IC1 CFGR3     |IC1 CFGR4     |IC1 CFGR5     |
 */
 
-uint8_t rx_cfg[TOTAL_IC][7];
+uint8_t rx_cfg[1][7];
 /*!<
   the rx_cfg[][8] array stores the data that is read back from a LTC6803-1 daisy chain.
   The configuration data for each IC is stored in blocks of 7 bytes. Below is an table illustrating the array organization:
