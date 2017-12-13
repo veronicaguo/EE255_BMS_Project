@@ -11,6 +11,10 @@
 #include "LTC68031.h"
 #include <SPI.h>
 #include "initialization.h"
+#include "cv_charge.h"
+#include "cc_charge.h"
+#include "conversion.h"
+#include "PWM_GEN.h"
 
 float duty = 0;
 float cell_voltage[4];
