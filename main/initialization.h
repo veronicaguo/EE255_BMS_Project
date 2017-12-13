@@ -1,3 +1,4 @@
+#define TOTAL_IC 1;
 void LTC_setup();
 void LTC_initialize();
 uint16_t LTC_cell_voltage_meas();

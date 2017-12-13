@@ -5,7 +5,7 @@
 #include "LT_SPI.h"
 #include "UserInterface.h"
 #include "LTC68031.h"
-#include <SPI.h>
+//! #include <SPI.h>
 
 int baud = 9600;
 
