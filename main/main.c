@@ -3,8 +3,8 @@
 */
 
 float duty = 0;
-float cell_voltage;
-float temp_voltage;
+float cell_voltage[4];
+float temp_voltage[2];
 float cell_current;
 int mode;
 int i;
@@ -36,6 +36,8 @@ void main(){
 		cell_voltage = vconv(cell_voltage_meas);
 		temp_voltage = tconv(temp_voltage_meas);
 		cell_current = iconv(cell_current_meas);
+
+		outputs = [cell_current,temp_voltage,cell_current];
 
 		duty = check_state(cell_voltage, cell_current, mode)	
 	}
