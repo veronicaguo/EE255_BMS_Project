@@ -4,7 +4,8 @@
 
 float duty = 0;
 float cell_voltage[4];
-float temp_voltage[2];
+float temp_value[2];
+float* output = malloc(7*sizeof(float));
 float cell_current;
 int mode;
 int i;
@@ -34,11 +35,15 @@ void main(){
 			cell_current_meas[i] = LTC_cell_current_meas();
 		}
 		cell_voltage = vconv(cell_voltage_meas);
-		temp_voltage = tconv(temp_voltage_meas);
+		temp_value = tconv(temp_voltage_meas);
 		cell_current = iconv(cell_current_meas);
 
-		outputs = [cell_current,temp_voltage,cell_current];
+		memcpy(output, cell_voltage, 4*sizeof(float));
+		memcpy(output+4, temp_value, 2*sizeof(float));
+		memcpy(output+6, temp_value, 1*sizeof(float));
 
-		duty = check_state(cell_voltage, cell_current, mode)	
+		Serial.println(output);
+
+		duty = check_state(cell_voltage, cell_current, mode);	
 	}
 }
