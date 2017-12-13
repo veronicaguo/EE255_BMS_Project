@@ -2,6 +2,16 @@
   EE255 BMS main loop.
 */
 
+//! include all libraries
+#include <Arduino.h>
+#include <stdint.h>
+#include "Linduino.h"
+#include "LT_SPI.h"
+#include "UserInterface.h"
+#include "LTC68031.h"
+#include <SPI.h>
+#include "initialization.h"
+
 float duty = 0;
 float cell_voltage[4];
 float temp_value[2];
