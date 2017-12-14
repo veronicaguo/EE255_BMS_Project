@@ -1,3 +1,4 @@
+*get code working
 *cell balancing code
 *cc and cv discharge code
 *temperature measurements
@@ -5,8 +6,7 @@
 
 
 
-*need to solder thermistors
-*need to set up battery packs
+*get a resistor between 3.3V and Din?
 *find spec sheet for battery
 *"characterization"
 

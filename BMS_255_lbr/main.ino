@@ -59,7 +59,7 @@ int main(){
 
 		//memcpy(outputvals, cell_voltage, sizeof(float));
 		//memcpy(outputvals+4, temp_value, sizeof(float));
-		//memcpy(outputvals+6, cell_current, 1*sizeof(float));
+		//memcpy(outputvals+6, cell_current, 1*sizeof (float));
     Serial.print(cell_voltage);
     Serial.println(temp_value);
 

@@ -1,8 +1,8 @@
 #define TOTAL_IC 1;
 void LTC_setup();
 void LTC_initialize();
-uint16_t LTC_cell_voltage_meas();
-uint16_t LTC_temp_voltage_meas();
+uint16_t *LTC_cell_voltage_meas();
+uint16_t *LTC_temp_voltage_meas();
 void print_menu();
 void run_command(uint32_t cmd);
 void init_cfg();
