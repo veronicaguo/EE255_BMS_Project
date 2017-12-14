@@ -15,7 +15,7 @@
 #include "PWM_GEN.h"
 
 float duty = 0;
-float cell_voltage_conv;
+float cell_voltage_conv[4];
 int mode;
 int i;
 int j;
@@ -60,12 +60,13 @@ int main(){
 		for (i = 0; i < 50; i++){
       for (j = 0; j < 12; j++){
         cell_voltage_meas[i][j] = cell_voltage[0][j];
-        }      
+      }      
 		}
-		cell_voltage_conv = vconv(cell_voltage_meas);
-   
-    Serial.println(cell_voltage_conv);
-
+    for (i = 0; i < 4; i++){
+      cell_voltage_conv[i] = *(vconv(cell_voltage_meas) + i);
+      Serial.println(cell_voltage_conv[i]);
+    }		 
+    
 		//Serial.println(outputvals);
 
 		//duty = check_state(cell_voltage, cell_current, mode);	
@@ -152,7 +153,7 @@ void init_cfg()
 }
 
 //voltage conversion
-float vconv(uint16_t volt[50][12])
+float * vconv(uint16_t volt[50][12])
 {
   for (i = 0; i<12; i++) {
     for (j = 0; j<50; j++) {
@@ -164,6 +165,6 @@ float vconv(uint16_t volt[50][12])
   for (i=0; i<4; i++) {
     vreal[i] = ((float)vavg[i] - VZERO) * VSLOPE;
   }
-  return *vreal;
+  return vreal;
 }
 
