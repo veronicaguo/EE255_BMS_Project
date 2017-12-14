@@ -53,9 +53,9 @@ int main(){
 			// need to create ``LTC_cell_current_meas()`` in initialization.c
 			//cell_current_meas[i] = LTC_cell_current_meas();
 		}
-		cell_voltage = *vconv(*cell_voltage_meas);
-		//temp_value = *tconv(*temp_voltage_meas);
-		//cell_current = *iconv(cell_current_meas);
+		cell_voltage = vconv(cell_voltage_meas);
+		//temp_value = tconv(temp_voltage_meas);
+		//cell_current = iconv(cell_current_meas);
 
 		//memcpy(outputvals, cell_voltage, sizeof(float));
 		//memcpy(outputvals+4, temp_value, sizeof(float));
