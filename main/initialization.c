@@ -59,7 +59,7 @@ void LTC_setup(){
 	Serial.begin(baud); //! baud rate
 	LTC6803_initialize(); //! initialize LTC6803 hardware
 	init_cfg();	//!initializa 6803 configuration
-	print_menu();
+	// print_menu();
 	// current_reading
 }
 
@@ -80,14 +80,14 @@ void LTC_initialize(){
 }
 
 
-uint16_t LTC_cell_voltage_meas(){
+uint16_t *LTC_cell_voltage_meas(){
   run_command(3);
   run_command(4);
   return cell_voltage;
 }
 
 
-uint16_t LTC_temp_voltage_meas(){
+uint16_t *LTC_temp_voltage_meas(){
   run_command(5);
   run_command(6);
   return temp_voltage;
@@ -97,18 +97,18 @@ uint16_t LTC_temp_voltage_meas(){
  /*!************************ Functions in the main loop ******************************/
 
 //! Prints the main menu
-void print_menu(){
-	  Serial.println(F("Please enter LTC6803 Command"));
-  	Serial.println(F("Write Configuration: 1"));
- 	  Serial.println(F("Read Configuration: 2"));
-  	Serial.println(F("Start Cell Voltage Conversion: 3"));
-  	Serial.println(F("Read Cell Voltages: 4"));
-  	Serial.println(F("Start Temp Voltage Conversion: 5"));
-  	Serial.println(F("Read Temp Voltages: 6"));
-  	Serial.println(F("loop cell voltages: 7"));
-  	Serial.println(F("Please enter command: "));
-  	Serial.println();
-}
+// void print_menu(){
+// 	  Serial.println(F("Please enter LTC6803 Command"));
+//   	Serial.println(F("Write Configuration: 1"));
+//  	  Serial.println(F("Read Configuration: 2"));
+//   	Serial.println(F("Start Cell Voltage Conversion: 3"));
+//   	Serial.println(F("Read Cell Voltages: 4"));
+//   	Serial.println(F("Start Temp Voltage Conversion: 5"));
+//   	Serial.println(F("Read Temp Voltages: 6"));
+//   	Serial.println(F("loop cell voltages: 7"));
+//   	Serial.println(F("Please enter command: "));
+//   	Serial.println();
+// }
 
 void run_command(uint32_t cmd){
 	int8_t error = 0;
@@ -197,7 +197,7 @@ void run_command(uint32_t cmd){
 
 	        delay(500);
 	      }
-	      print_menu();
+	      // print_menu();
 	      break;
 
 	    default:

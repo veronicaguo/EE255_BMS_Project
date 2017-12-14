@@ -13,7 +13,7 @@ int baud = 9600;
 const uint8_t TOTAL_IC = 1; 
 
 //! array to store cell voltages
-uint16_t cell_voltage[TOTAL_IC][4];
+uint16_t cell_voltage[1][4];
 /*!<
   The cell codes will be stored in the cell_codes[][12] array in the following format:
 
@@ -23,14 +23,14 @@ uint16_t cell_voltage[TOTAL_IC][4];
 ****/
 
 //! array to store temperature voltages
-uint16_t temp_voltage[TOTAL_IC][2];
+uint16_t temp_voltage[1][2];
 
 //! array to store current values
 
 
 
 
-uint8_t tx_cfg[TOTAL_IC][6];
+uint8_t tx_cfg[1][6];
 /*!<
   The tx_cfg[][6] stores the LTC6803 configuration data that is going to be written
   to the LTC6803 ICs on the daisy chain. The LTC6803 configuration data that will be
@@ -41,7 +41,7 @@ uint8_t tx_cfg[TOTAL_IC][6];
  |IC1 CFGR0     |IC1 CFGR1     |IC1 CFGR2     |IC1 CFGR3     |IC1 CFGR4     |IC1 CFGR5     |
 */
 
-uint8_t rx_cfg[TOTAL_IC][7];
+uint8_t rx_cfg[1][7];
 /*!<
   the rx_cfg[][8] array stores the data that is read back from a LTC6803-1 daisy chain.
   The configuration data for each IC is stored in blocks of 7 bytes. Below is an table illustrating the array organization:
@@ -59,7 +59,7 @@ void LTC_setup(){
 	Serial.begin(baud); //! baud rate
 	LTC6803_initialize(); //! initialize LTC6803 hardware
 	init_cfg();	//!initializa 6803 configuration
-	print_menu();
+	// print_menu();
 	// current_reading
 }
 
@@ -80,14 +80,14 @@ void LTC_initialize(){
 }
 
 
-uint16_t LTC_cell_voltage_meas(){
+uint16_t *LTC_cell_voltage_meas(){
   run_command(3);
   run_command(4);
   return cell_voltage;
 }
 
 
-uint16_t LTC_temp_voltage_meas(){
+uint16_t *LTC_temp_voltage_meas(){
   run_command(5);
   run_command(6);
   return temp_voltage;
@@ -97,18 +97,18 @@ uint16_t LTC_temp_voltage_meas(){
  /*!************************ Functions in the main loop ******************************/
 
 //! Prints the main menu
-void print_menu(){
-	  Serial.println(F("Please enter LTC6803 Command"));
-  	Serial.println(F("Write Configuration: 1"));
- 	  Serial.println(F("Read Configuration: 2"));
-  	Serial.println(F("Start Cell Voltage Conversion: 3"));
-  	Serial.println(F("Read Cell Voltages: 4"));
-  	Serial.println(F("Start Temp Voltage Conversion: 5"));
-  	Serial.println(F("Read Temp Voltages: 6"));
-  	Serial.println(F("loop cell voltages: 7"));
-  	Serial.println(F("Please enter command: "));
-  	Serial.println();
-}
+// void print_menu(){
+// 	  Serial.println(F("Please enter LTC6803 Command"));
+//   	Serial.println(F("Write Configuration: 1"));
+//  	  Serial.println(F("Read Configuration: 2"));
+//   	Serial.println(F("Start Cell Voltage Conversion: 3"));
+//   	Serial.println(F("Read Cell Voltages: 4"));
+//   	Serial.println(F("Start Temp Voltage Conversion: 5"));
+//   	Serial.println(F("Read Temp Voltages: 6"));
+//   	Serial.println(F("loop cell voltages: 7"));
+//   	Serial.println(F("Please enter command: "));
+//   	Serial.println();
+// }
 
 void run_command(uint32_t cmd){
 	int8_t error = 0;
@@ -197,7 +197,7 @@ void run_command(uint32_t cmd){
 
 	        delay(500);
 	      }
-	      print_menu();
+	      // print_menu();
 	      break;
 
 	    default:
@@ -222,7 +222,6 @@ void init_cfg()
     tx_cfg[i][4] = 0x00 ;
     tx_cfg[i][5] = 0x00 ;
   }
-}
 
 
 //! prints cell voltage to the serial port
