@@ -34,7 +34,7 @@ printf("%d %d\n",a,b);
 */
 
 //voltage conversion
-float vconv(float volts)
+float vconv(float **volts)
 {
 	vcol = sizeof(volts[0])/sizeof(volts[0][0]);
 	vrow = sizeof(volts)/sizeof(volts[0]);
@@ -48,10 +48,10 @@ float vconv(float volts)
 	for (i=0; i<VREADNUM; i++) {
 		vreal[i] = vavg[i]*VSLOPE + VZERO;
 	}
-	return vreal;
+	return *vreal;
 }
 
-float iconv(float curr)
+float iconv(float **curr)
 {
 	icol = sizeof(curr[0])/sizeof(curr[0][0]);
 	irow = sizeof(curr)/sizeof(curr[0]);
@@ -65,10 +65,10 @@ float iconv(float curr)
 	for (i=0; i<IREADNUM; i++) {
 		ireal[i] = iavg[i]*ISLOPE + IZERO;
 	}
-	return ireal;
+	return *ireal;
 }
 
-float tconv(float temp)
+float tconv(float **temp)
 {
 	tcol = sizeof(temp[0])/sizeof(temp[0][0]);
 	trow = sizeof(temp)/sizeof(temp[0]);
@@ -82,5 +82,5 @@ float tconv(float temp)
 	for (i=0; i<TREADNUM; i++) {
 		treal[i] = tavg[i]*TSLOPE + TZERO;
 	}
-	return treal;
+	return *treal;
 }
