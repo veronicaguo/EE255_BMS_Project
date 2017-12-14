@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include "Linduino.h"
 #include "LT_SPI.h"
-#include "UserInterface.h"
+//! #include "UserInterface.h"
 #include "LTC68031.h"
 #include <SPI.h>
 #include "cv_charge.h"
@@ -17,15 +17,16 @@
 
 float duty = 0;
 float cell_voltage_conv;
-float temp_value;
-//float* outputvals = (float *) malloc(7*sizeof(float));
 float cell_current;
 int mode;
 int i;
-uint16_t cell_voltage_meas[50];
-uint16_t temp_voltage_meas[50];
-uint16_t cell_current_meas[50];
+uint16_t cell_voltage_meas[50][4];
+
 int baud = 9600;
+const uint8_t TOTAL_IC = 1; 
+uint16_t cell_voltage[TOTAL_IC][4];
+uint8_t tx_cfg[TOTAL_IC][6];
+uint8_t rx_cfg[TOTAL_IC][7];
 
 void setup() {
   Serial.begin(baud);
@@ -47,14 +48,12 @@ int main(){
 
 		// measure cell voltages and temp voltages
     LTC_cell_voltage_meas();
-		for (i = 0; i < 50; i++){
-      cell_voltage_meas[i] = cell_voltage;
-		}
-		cell_voltage_conv = vconv(cell_voltage_meas);
-
-		//memcpy(outputvals, cell_voltage, sizeof(float));
-   
-    Serial.println(cell_voltage_conv);
+//		for (i = 0; i < 50; i++){
+//      cell_voltage_meas[i] = cell_voltage[0];
+//		}
+//		cell_voltage_conv = vconv(cell_voltage_meas);
+//   
+//    Serial.println(cell_voltage_conv);
 
 		//Serial.println(outputvals);
 
@@ -66,11 +65,7 @@ int main(){
 
 //! Initialization
 
-int baud = 9600;
-const uint8_t TOTAL_IC = 1; 
-uint16_t cell_voltage[TOTAL_IC][4];
-uint8_t tx_cfg[TOTAL_IC][6];
-uint8_t rx_cfg[TOTAL_IC][7];
+
 
 //! Initializes hardware and variables
 
@@ -92,8 +87,6 @@ void LTC_cell_voltage_meas(void){
 }
 
 void run_command(uint32_t cmd){
-  int8_t error = 0;
-  char input = 0;
   //! execute the following comands according to user input
     switch (cmd){
     
@@ -104,7 +97,7 @@ void run_command(uint32_t cmd){
 
       case 2:
 
-        error = LTC6803_rdcfg(TOTAL_IC,rx_cfg);
+        LTC6803_rdcfg(TOTAL_IC,rx_cfg);
         break;
 
       case 3: //! start cell voltage ADC conversion
@@ -115,7 +108,7 @@ void run_command(uint32_t cmd){
 
       case 4: //! read cell voltages
 
-        error = LTC6803_rdcv(TOTAL_IC,cell_voltage); //! set to read back all cell voltage registers
+        LTC6803_rdcv(TOTAL_IC,cell_voltage); //! set to read back all cell voltage registers
         break;
 
       case 5: //! start temp voltage ADC conversion
@@ -126,7 +119,7 @@ void run_command(uint32_t cmd){
 
       case 6: //! real temp voltages
 
-        error = LTC6803_rdtmp(TOTAL_IC,temp_voltage); // Set to read back all temp registers
+        LTC6803_rdtmp(TOTAL_IC,temp_voltage); // Set to read back all temp registers
         break;
       
       default:
