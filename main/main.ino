@@ -155,8 +155,8 @@ void init_cfg()
 //voltage conversion
 float * vconv(uint16_t volt[50][12])
 {
-  for (i = 0; i<12; i++) {
-    for (j = 0; j<50; j++) {
+  for (i = 0; i < 12; i++) {
+    for (j = 0; j < 50; j++) {
       vsum += volt[j][i];
     }
     vavg[i] = vsum/50;
