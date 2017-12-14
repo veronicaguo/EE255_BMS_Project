@@ -20,11 +20,12 @@ float cell_voltage_conv;
 float cell_current;
 int mode;
 int i;
-uint16_t cell_voltage_meas[50][4];
+uint16_t cell_voltage_meas[50][12];
 
 int baud = 9600;
 const uint8_t TOTAL_IC = 1; 
-uint16_t cell_voltage[TOTAL_IC][4];
+uint16_t cell_voltage[TOTAL_IC][12];
+uint16_t temp_voltage[TOTAL_IC][3];
 uint8_t tx_cfg[TOTAL_IC][6];
 uint8_t rx_cfg[TOTAL_IC][7];
 
@@ -122,10 +123,6 @@ void run_command(uint32_t cmd){
         LTC6803_rdtmp(TOTAL_IC,temp_voltage); // Set to read back all temp registers
         break;
       
-      default:
-        SPI.transfer(F("Incorrect Option"));
-        break;
-
   }
 }
 
