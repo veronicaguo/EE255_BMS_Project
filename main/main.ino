@@ -7,19 +7,18 @@
 #include <stdint.h>
 #include "Linduino.h"
 #include "LT_SPI.h"
-//! #include "UserInterface.h"
 #include "LTC68031.h"
 #include <SPI.h>
-#include "cv_charge.h"
-#include "cc_charge.h"
-#include "conversion.h"
+//#include "cv_charge.h"
+//#include "cc_charge.h"
+//#include "conversion.h"
 #include "PWM_GEN.h"
 
 float duty = 0;
 float cell_voltage_conv;
-float cell_current;
 int mode;
 int i;
+int j;
 uint16_t cell_voltage_meas[50][12];
 
 int baud = 9600;
@@ -49,12 +48,15 @@ int main(){
 
 		// measure cell voltages and temp voltages
     LTC_cell_voltage_meas();
-//		for (i = 0; i < 50; i++){
-//      cell_voltage_meas[i] = cell_voltage[0];
-//		}
-//		cell_voltage_conv = vconv(cell_voltage_meas);
-//   
-//    Serial.println(cell_voltage_conv);
+    
+		for (i = 0; i < 50; i++){
+      for (j = 0; j < 12; j++){
+        cell_voltage_meas[i][j] = cell_voltage[0][j];
+        }      
+		}
+		cell_voltage_conv = vconv(cell_voltage_meas);
+   
+    Serial.println(cell_voltage_conv);
 
 		//Serial.println(outputvals);
 
@@ -139,5 +141,23 @@ void init_cfg()
     tx_cfg[i][4] = 0x00 ;
     tx_cfg[i][5] = 0x00 ;
   }
+}
+
+//voltage conversion
+float vconv(uint16_t volt[50][12])
+{
+  vcol = sizeof(volts[0])/sizeof(volts[0][0]);
+  vrow = sizeof(volts)/sizeof(volts[0]);
+  for (i = 0; i<vcol; i++) {
+    for (j = 0; j<vrow; j++) {
+      vsum += volts[j][i];
+    }
+    vavg[i] = vsum/vrow;
+    vsum = 0;
+  }
+  for (i=0; i<4; i++) {
+    vreal[i] = vavg[i]*VSLOPE + VZERO;
+  }
+  return *vreal;
 }
 
