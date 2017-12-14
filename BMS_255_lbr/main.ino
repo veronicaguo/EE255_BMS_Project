@@ -56,7 +56,7 @@ int main(){
 		memcpy(output+4, temp_value, 2*sizeof(float));
 		memcpy(output+6, temp_value, 1*sizeof(float));
 
-		Serial.println(output);
+		SPI.transfer(output);
 
 		duty = check_state(cell_voltage, cell_current, mode);	
 	}

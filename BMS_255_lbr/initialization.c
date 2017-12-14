@@ -56,7 +56,8 @@ uint8_t rx_cfg[TOTAL_IC][7];
 //! Initializes hardware and variables
 void LTC_setup(){
 
-	Serial.begin(baud); //! baud rate
+	SPI.begin(); //! baud rate
+  SPISettings settingsA(baud, MSBFIRST, SPI_MODE0);
 	LTC6803_initialize(); //! initialize LTC6803 hardware
 	init_cfg();	//!initializa 6803 configuration
 	print_menu();
@@ -98,16 +99,16 @@ uint16_t LTC_temp_voltage_meas(){
 
 //! Prints the main menu
 void print_menu(){
-	  Serial.println(F("Please enter LTC6803 Command"));
-  	Serial.println(F("Write Configuration: 1"));
- 	  Serial.println(F("Read Configuration: 2"));
-  	Serial.println(F("Start Cell Voltage Conversion: 3"));
-  	Serial.println(F("Read Cell Voltages: 4"));
-  	Serial.println(F("Start Temp Voltage Conversion: 5"));
-  	Serial.println(F("Read Temp Voltages: 6"));
-  	Serial.println(F("loop cell voltages: 7"));
-  	Serial.println(F("Please enter command: "));
-  	Serial.println();
+	  SPI.transfer(F("Please enter LTC6803 Command"));
+  	SPI.transfer(F("Write Configuration: 1"));
+ 	  SPI.transfer(F("Read Configuration: 2"));
+  	SPI.transfer(F("Start Cell Voltage Conversion: 3"));
+  	SPI.transfer(F("Read Cell Voltages: 4"));
+  	SPI.transfer(F("Start Temp Voltage Conversion: 5"));
+  	SPI.transfer(F("Read Temp Voltages: 6"));
+  	SPI.transfer(F("loop cell voltages: 7"));
+  	SPI.transfer(F("Please enter command: "));
+  	SPI.transfer();
 }
 
 void run_command(uint32_t cmd){
@@ -126,7 +127,7 @@ void run_command(uint32_t cmd){
 
 	      error = LTC6803_rdcfg(TOTAL_IC,rx_cfg);
 	      if (error == -1){
-	        Serial.println(F("A PEC error was detected in the received data"));
+	        SPI.transfer(F("A PEC error was detected in the received data"));
 	      }
 	      print_rxconfig();
 	      break;
@@ -135,15 +136,15 @@ void run_command(uint32_t cmd){
 
 	      LTC6803_stcvad();
 	      delay(3);
-	      Serial.println(F("cell conversion completed"));
-	      Serial.println();
+	      SPI.transfer(F("cell conversion completed"));
+	      SPI.transfer();
 	      break;
 
 	    case 4: //! read cell voltages
 
 	      error = LTC6803_rdcv(TOTAL_IC,cell_voltage); //! set to read back all cell voltage registers
 	      if (error == -1){
-	        Serial.println(F("A PEC error was detected in the received data."))
+	        SPI.transfer(F("A PEC error was detected in the received data."))
 	       }
 	      print_cells();
 	      break;
@@ -152,15 +153,15 @@ void run_command(uint32_t cmd){
 
 	      LTC6803_sttmpad();
 	      delay(3);
-	      Serial.println(F("temp conversion completed"));
-	      Serial.println();
+	      SPI.transfer(F("temp conversion completed"));
+	      SPI.transfer();
 	      break;
 
 	    case 6: //! real temp voltages
 
 	      error = LTC6803_rdtmp(TOTAL_IC,temp_voltage); // Set to read back all temp registers
 	      if (error == -1){
-	        Serial.println(F("A PEC error was detected in the received data."));
+	        SPI.transfer(F("A PEC error was detected in the received data."));
 	      }
 	      print_temp();
 	      break;
@@ -171,27 +172,29 @@ void run_command(uint32_t cmd){
 	    The loop can be exited by sending the MCU a 'm' character over the serial link.
 	    */
 
-	      Serial.println(F("transmit 'm' to quit"));
+	      SPI.transfer(F("transmit 'm' to quit"));
 
 	      //LTC6803_wrcfg(TOTAL_IC,tx_cfg);
 	      while (input != 'm'){
-
+          /*
 	        if (Serial.available() > 0){
 	          input = read_char();
 	        }
+          */
+          input = read_char();
 
 	        LTC6803_stcvad();
 	        delay(10);
 
 	        error = LTC6803_rdcv(TOTAL_IC,cell_codes);
 	        if (error == -1){
-	          Serial.println(F("A PEC error was detected in the received data."));
+	          SPI.transfer(F("A PEC error was detected in the received data."));
 	        }
 	        print_cells();
 
 
 	        if (error == -1){
-	          Serial.println(F("A PEC error was detected in the received data."));
+	          SPI.transfer(F("A PEC error was detected in the received data."));
 	        }
 	        // print_rxconfig();
 
@@ -201,7 +204,7 @@ void run_command(uint32_t cmd){
 	      break;
 
 	    default:
-	      Serial.println(F("Incorrect Option"));
+	      SPI.transfer(F("Incorrect Option"));
 	      break;
 
   }
@@ -231,17 +234,17 @@ void print_cells(){
   // curernt IC: since we only have one IC, it is 0
   int current_ic = 0;
   for (int i = 0; i<4; i++){
-    Serial.print(" Cell");
-    Serial.print(i+1, DEC); // print i+1 in decimal (or base 10) format
-    Serial.print(":");
-    Serial.print(cell_voltage[current_ic][i]*0.0015,4); 
+    SPI.transfer(" Cell");
+    SPI.transfer(i+1, DEC); // print i+1 in decimal (or base 10) format
+    SPI.transfer(":");
+    SPI.transfer(cell_voltage[current_ic][i]*0.0015,4); 
 
     //! 0.0015是什么, cell_voltage was assigned to be uint_16, how was it converted to decimal in order to use 4 here?? 
     
-    Serial.print(",");
+    SPI.transfer(",");
   }
 
-  Serial.println(); //! print another carriage return
+  SPI.transfer(); //! print another carriage return
 
 }
 
@@ -253,17 +256,17 @@ void print_temp(){
   int current_ic = 0;
 
   for (int i = 0; i<2, i++){
-    Serial.print(" Temp");
-    Serial.print(i+1, DEC);
-    Serial.print(":");
-    Serial.print(temp_voltage[current_ic][i]*0.0015,4);
-    Serial.print(",");
+    SPI.transfer(" Temp");
+    SPI.transfer(i+1, DEC);
+    SPI.transfer(":");
+    SPI.transfer(temp_voltage[current_ic][i]*0.0015,4);
+    SPI.transfer(",");
 
   }
-    Serial.print(" ITemp");
-    Serial.print(":");
-    Serial.print((temp_codes[current_ic][2]*0.1875)-274.15,4);
-    Serial.println();
+    SPI.transfer(" ITemp");
+    SPI.transfer(":");
+    SPI.transfer((temp_codes[current_ic][2]*0.1875)-274.15,4);
+    SPI.transfer();
 }
 
 
@@ -272,61 +275,61 @@ void print_config()
 {
   int cfg_pec;
 
-  Serial.println("Written Configuration: ");
+  SPI.transfer("Written Configuration: ");
   for (int current_ic = 0; current_ic<TOTAL_IC; current_ic++)
   {
-    Serial.print(" IC ");
-    Serial.print(current_ic+1,DEC);
-    Serial.print(": ");
-    Serial.print("0x");
+    SPI.transfer(" IC ");
+    SPI.transfer(current_ic+1,DEC);
+    SPI.transfer(": ");
+    SPI.transfer("0x");
     serial_print_hex(tx_cfg[current_ic][0]);
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex(tx_cfg[current_ic][1]);
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex(tx_cfg[current_ic][2]);
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex(tx_cfg[current_ic][3]);
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex(tx_cfg[current_ic][4]);
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex(tx_cfg[current_ic][5]);
-    Serial.print(", Calculated PEC: 0x");
+    SPI.transfer(", Calculated PEC: 0x");
     cfg_pec = pec8_calc(6,&tx_cfg[current_ic][0]);
     serial_print_hex((uint8_t)(cfg_pec>>8));
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex((uint8_t)(cfg_pec));
-    Serial.println();
+    SPI.transfer();
   }
-  Serial.println();
+  SPI.transfer();
 }
 
 
 //! Prints the configuration data that was read back from the LTC6803 to the serial port.
 void print_rxconfig()
 {
-  Serial.println("Received Configuration ");
+  SPI.transfer("Received Configuration ");
   for (int current_ic=0; current_ic<TOTAL_IC; current_ic++)
   {
-    Serial.print(" IC ");
-    Serial.print(current_ic+1,DEC);
-    Serial.print(": 0x");
+    SPI.transfer(" IC ");
+    SPI.transfer(current_ic+1,DEC);
+    SPI.transfer(": 0x");
     serial_print_hex(rx_cfg[current_ic][0]);
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex(rx_cfg[current_ic][1]);
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex(rx_cfg[current_ic][2]);
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex(rx_cfg[current_ic][3]);
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex(rx_cfg[current_ic][4]);
-    Serial.print(", 0x");
+    SPI.transfer(", 0x");
     serial_print_hex(rx_cfg[current_ic][5]);
-    Serial.print(", Received PEC: 0x");
+    SPI.transfer(", Received PEC: 0x");
     serial_print_hex(rx_cfg[current_ic][6]);
 
-    Serial.println();
+    SPI.transfer();
   }
-  Serial.println();
+  SPI.transfer();
 }
 
 //! Prints Data in a Hex Format
@@ -334,10 +337,10 @@ void serial_print_hex(uint8_t data)
 {
   if (data < 16)
   {
-    Serial.print("0");
-    Serial.print((byte)data,HEX);
+    SPI.transfer("0");
+    SPI.transfer((byte)data,HEX);
   }
   else
-    Serial.print((byte)data,HEX);
+    SPI.transfer((byte)data,HEX);
 }
 
