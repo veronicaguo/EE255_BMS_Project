@@ -222,6 +222,7 @@ void init_cfg()
     tx_cfg[i][4] = 0x00 ;
     tx_cfg[i][5] = 0x00 ;
   }
+}
 
 
 //! prints cell voltage to the serial port
