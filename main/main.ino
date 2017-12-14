@@ -21,12 +21,20 @@ int i;
 int j;
 uint16_t cell_voltage_meas[50][12];
 
+// initialization variables
 int baud = 9600;
 const uint8_t TOTAL_IC = 1; 
 uint16_t cell_voltage[TOTAL_IC][12];
 uint16_t temp_voltage[TOTAL_IC][3];
 uint8_t tx_cfg[TOTAL_IC][6];
 uint8_t rx_cfg[TOTAL_IC][7];
+
+// conversion variables
+uint16_t vsum = 0;
+uint16_t vavg[4] = {0, 0, 0, 0};
+float vreal[4];
+float VSLOPE = 100;
+float VZERO = 100;
 
 void setup() {
   Serial.begin(baud);
@@ -146,17 +154,15 @@ void init_cfg()
 //voltage conversion
 float vconv(uint16_t volt[50][12])
 {
-  vcol = sizeof(volts[0])/sizeof(volts[0][0]);
-  vrow = sizeof(volts)/sizeof(volts[0]);
-  for (i = 0; i<vcol; i++) {
-    for (j = 0; j<vrow; j++) {
-      vsum += volts[j][i];
+  for (i = 0; i<12; i++) {
+    for (j = 0; j<50; j++) {
+      vsum += volt[j][i];
     }
-    vavg[i] = vsum/vrow;
+    vavg[i] = vsum/50;
     vsum = 0;
   }
   for (i=0; i<4; i++) {
-    vreal[i] = vavg[i]*VSLOPE + VZERO;
+    vreal[i] = ((float)vavg[i] - VZERO) * VSLOPE;
   }
   return *vreal;
 }
