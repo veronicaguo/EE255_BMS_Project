@@ -19,7 +19,7 @@
 float duty = 0;
 float cell_voltage[4];
 float temp_value[2];
-float* output = malloc(7*sizeof(float));
+float* output = (float *) malloc(7*sizeof(float));
 float cell_current;
 int mode;
 int i;
