@@ -23,7 +23,7 @@
 #endif
 
 #ifndef VREADNUM
-#define VREADNUM 5
+#define VREADNUM 4
 #endif
 
 #ifndef IREADNUM
@@ -34,6 +34,6 @@
 #define TREADNUM 2
 #endif
 
-float vconv(uint16_t volt);
-float iconv(uint16_t curr);
-float tconv(uint16_t temp);
+float vconv(float volt);
+float iconv(float curr);
+float tconv(float temp);

@@ -32,7 +32,7 @@ printf("%d %d\n",a,b);
 */
 
 //voltage conversion
-float vconv(uint16_t volts)
+float vconv(float volts)
 {
 	vcol = sizeof(volts[0])/sizeof(volts[0][0]);
 	vrow = sizeof(volts)/sizeof(volts[0]);
@@ -49,7 +49,7 @@ float vconv(uint16_t volts)
 	return vreal;
 }
 
-float iconv(uint16_t curr)
+float iconv(float curr)
 {
 	icol = sizeof(curr[0])/sizeof(curr[0][0]);
 	irow = sizeof(curr)/sizeof(curr[0]);
@@ -66,7 +66,7 @@ float iconv(uint16_t curr)
 	return ireal;
 }
 
-float tconv(uint16_t temp)
+float tconv(float temp)
 {
 	tcol = sizeof(temp[0])/sizeof(temp[0][0]);
 	trow = sizeof(temp)/sizeof(temp[0]);

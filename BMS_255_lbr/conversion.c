@@ -16,14 +16,16 @@ int irow;
 int tcol; //temp size array
 int trow;
 int vsum = 0;
-int vavg[VREADNUM] = 0;
+int vavg[4] = {0, 0, 0, 0};
 int isum = 0;
-int iavg[IREADNUM] = 0;
+int iavg[1] = {0};
 int tsum = 0;
-int tavg[TREADNUM] = 0;
-float vreal[VREADNUM];
-float ireal[IREADNUM];
-float treal[TREADNUM];
+int tavg[2] = {0, 0};
+float vreal[4];
+float ireal[2];
+float treal[1];
+int i;
+int j;
 
 /*
 a = sizeof(array[0])/sizeof(array[0][0]);
@@ -32,7 +34,7 @@ printf("%d %d\n",a,b);
 */
 
 //voltage conversion
-float vconv(uint16_t volts)
+float vconv(float volts)
 {
 	vcol = sizeof(volts[0])/sizeof(volts[0][0]);
 	vrow = sizeof(volts)/sizeof(volts[0]);
@@ -49,7 +51,7 @@ float vconv(uint16_t volts)
 	return vreal;
 }
 
-float iconv(uint16_t curr)
+float iconv(float curr)
 {
 	icol = sizeof(curr[0])/sizeof(curr[0][0]);
 	irow = sizeof(curr)/sizeof(curr[0]);
@@ -66,7 +68,7 @@ float iconv(uint16_t curr)
 	return ireal;
 }
 
-float tconv(uint16_t temp)
+float tconv(float temp)
 {
 	tcol = sizeof(temp[0])/sizeof(temp[0][0]);
 	trow = sizeof(temp)/sizeof(temp[0]);
