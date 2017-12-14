@@ -34,6 +34,6 @@
 #define TREADNUM 2
 #endif
 
-float vconv(float volt);
-float iconv(float curr);
-float tconv(float temp);
+float *vconv(float volt);
+float *iconv(float curr);
+float *tconv(float temp);

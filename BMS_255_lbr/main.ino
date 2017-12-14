@@ -49,19 +49,19 @@ int main(){
 		// measure cell voltages and temp voltages
 		for (i = 0; i < 50; i++){
 			cell_voltage_meas[i] = LTC_cell_voltage_meas();
-			temp_voltage_meas[i] = LTC_temp_voltage_meas();
+			//temp_voltage_meas[i] = LTC_temp_voltage_meas();
 			// need to create ``LTC_cell_current_meas()`` in initialization.c
 			//cell_current_meas[i] = LTC_cell_current_meas();
 		}
-		cell_voltage = vconv(*cell_voltage_meas);
-		temp_value = tconv(*temp_voltage_meas);
-		//cell_current = iconv(cell_current_meas);
+		cell_voltage = *vconv(*cell_voltage_meas);
+		//temp_value = *tconv(*temp_voltage_meas);
+		//cell_current = *iconv(cell_current_meas);
 
 		//memcpy(outputvals, cell_voltage, sizeof(float));
 		//memcpy(outputvals+4, temp_value, sizeof(float));
 		//memcpy(outputvals+6, cell_current, 1*sizeof (float));
-    Serial.print(cell_voltage);
-    Serial.println(temp_value);
+    Serial.println(cell_voltage);
+    //Serial.println(temp_value);
 
 		//Serial.println(outputvals);
 
