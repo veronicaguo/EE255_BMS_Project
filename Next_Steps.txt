@@ -1,4 +1,5 @@
 *get code working
+*just start with voltage readings
 *cell balancing code
 *cc and cv discharge code
 *temperature measurements

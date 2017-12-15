@@ -12,10 +12,10 @@
 //#include "cv_charge.h"
 //#include "cc_charge.h"
 //#include "conversion.h"
-#include "PWM_GEN.h"
+//#include "PWM_GEN.h"
 
 float duty = 0;
-float cell_voltage_conv[4];
+float cell_voltage_conv[12];
 int mode;
 int i;
 int j;
@@ -31,19 +31,20 @@ uint8_t rx_cfg[TOTAL_IC][7];
 
 // conversion variables
 uint16_t vsum = 0;
-uint16_t vavg[4] = {0, 0, 0, 0};
-float vreal[4];
+uint16_t vavg[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+float vreal[12];
 float VSLOPE = 100;
 float VZERO = 100;
 
 void setup() {
   Serial.begin(baud);
+  Serial.println("Time Cell1 Cell2 Cell3 Cell4");
 }
 
 int main(){
 	
 	// PWM setup and initialization
-	pwmsetup();
+	//pwmsetup();
 
 	// LTC setup and initialization
 	LTC_setup();	
@@ -52,7 +53,7 @@ int main(){
 	// main loop
 	while(1){
 		// PWM assignment
-		pwmgen(duty);
+		//pwmgen(duty);
 
 		// measure cell voltages and temp voltages
     LTC_cell_voltage_meas();
@@ -62,14 +63,24 @@ int main(){
         cell_voltage_meas[i][j] = cell_voltage[0][j];
       }      
 		}
+    /*
     for (i = 0; i < 4; i++){
       cell_voltage_conv[i] = *(vconv(cell_voltage_meas) + i);
       Serial.println(cell_voltage_conv[i]);
     }		 
-    
+    */
+    Serial.print(millis());
+    Serial.print(" ");
+    for (i = 0; i < 12; i++){
+      Serial.print(cell_voltage[0][i]*0.0015,4);
+      Serial.print(" ");
+    }
+    Serial.println();
+
 		//Serial.println(outputvals);
 
 		//duty = check_state(cell_voltage, cell_current, mode);	
+    delay(100);
 	}
 
 	return 0;
@@ -82,6 +93,7 @@ int main(){
 //! Initializes hardware and variables
 
 void LTC_setup(){
+  //spi_enable(SPI_CLOCK_DIV4);
   SPI.begin(); //! baud rate
   SPISettings settingsA(baud, MSBFIRST, SPI_MODE0);
   LTC6803_initialize(); //! initialize LTC6803 hardware
@@ -162,7 +174,7 @@ float * vconv(uint16_t volt[50][12])
     vavg[i] = vsum/50;
     vsum = 0;
   }
-  for (i=0; i<4; i++) {
+  for (i=0; i<12; i++) {
     vreal[i] = ((float)vavg[i] - VZERO) * VSLOPE;
   }
   return vreal;
